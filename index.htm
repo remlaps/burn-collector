@@ -217,19 +217,10 @@
     async function getBlockTimestamp(blockNum) {
         if (blockTsCache[blockNum] !== undefined) return blockTsCache[blockNum];
         try {
-            const resp = await fetch('https://api.steemit.com', {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({
-                    jsonrpc: '2.0',
-                    method: 'condenser_api.get_block_header',
-                    params: [blockNum],
-                    id: 1
-                })
-            });
+            const resp = await fetch(`https://sds.steemworld.org/block_api/getBlock/${blockNum}`);
             const data = await resp.json();
-            if (data && data.result && data.result.timestamp) {
-                const d = new Date(data.result.timestamp + 'Z');
+            if (data && data.result && data.result.block && data.result.block.timestamp) {
+                const d = new Date(data.result.block.timestamp + 'Z');
                 const ts = Math.floor(d.getTime() / 1000);
                 blockTsCache[blockNum] = ts;
                 return ts;
