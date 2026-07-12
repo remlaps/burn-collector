@@ -190,178 +190,52 @@
     const sleep=ms=>new Promise(r=>setTimeout(r,ms));
     function resolveColIdx(cols,name,fallback){if(Array.isArray(cols)){const idx=cols.indexOf(name);return idx===-1?fallback:idx}else if(cols&&typeof cols==='object'){if(typeof cols[name]!=='undefined')return cols[name];const idx=Object.keys(cols).indexOf(name);return idx===-1?fallback:idx}return fallback}
 
-    async function fetchAllUserBurns(username,statusDiv){
-        const limit=1000;let offset=0;const found=[];const query={type:"transfer",from:username,to:"null"};
-        while(true){
-            statusDiv.innerText=`Loading @null burns from SDS (${found.length.toLocaleString()} found)...`;
-            const url=`https://sds.steemworld.org/transfers_api/getTransfers/${encodeURIComponent(JSON.stringify(query))}/${limit}/${offset}`;
-            const resp=await fetch(url);const data=await resp.json();
-            if(!data||!data.result||!Array.isArray(data.result.rows))break;
-            const rows=data.result.rows;const cols=data.result.cols;
-            const timeIdx=resolveColIdx(cols,'time',resolveColIdx(cols,'timestamp',0));
-            const amountIdx=resolveColIdx(cols,'amount',1);
-            const unitIdx=resolveColIdx(cols,'unit',resolveColIdx(cols,'symbol',2));
-            for(const row of rows){
-                const timestamp=row[timeIdx];const amount=parseFloat(row[amountIdx])||0;const unit=row[unitIdx]||'STEEM';
-                if(!timestamp||amount<=0)continue;
-                found.push({burnAmount:`${amount} ${unit}`,timestamp});
+    async function fetchAllUserBurns(username, statusDiv){
+        const limit = 10000;
+        let offset = 0;
+        const found = [];
+        const fromTime = 0;
+        const toTime = 999999999999;
+        while (true) {
+            statusDiv.innerText = `Loading @null burns from account history (${found.length.toLocaleString()} found)...`;
+            const url = `https://sds.steemworld.org/account_history_api/getHistoryByOpTypesTime/${username}/transfer/${fromTime}-${toTime}/${limit}/${offset}`;
+            const resp = await fetch(url);
+            const data = await resp.json();
+            if (!data || !data.result || !Array.isArray(data.result.rows)) break;
+            const rows = data.result.rows;
+            const cols = data.result.cols;
+            const blockIdx = resolveColIdx(cols, 'block_num', 2);
+            const timeIdx = resolveColIdx(cols, 'time', 1);
+            const opIdx = resolveColIdx(cols, 'op', 6);
+            for (const row of rows) {
+                const blockNum = row[blockIdx];
+                const timestamp = row[timeIdx];
+                const op = row[opIdx];
+                if (!blockNum || !op || !Array.isArray(op) || op.length < 2) continue;
+                const opType = op[0];
+                const opData = op[1];
+                if (opType !== 'transfer' || !opData) continue;
+                const to = (typeof opData.to === 'string') ? opData.to : '';
+                if (to.toLowerCase() !== 'null') continue;
+                const amountRaw = opData.amount;
+                if (amountRaw === null || amountRaw === undefined) continue;
+                let amount, unit;
+                if (typeof amountRaw === 'string') {
+                    const parts = amountRaw.split(' ');
+                    amount = parseFloat(parts[0]) || 0;
+                    unit = parts.slice(1).join(' ') || 'STEEM';
+                } else {
+                    amount = parseFloat(amountRaw) || 0;
+                    unit = 'STEEM';
+                }
+                if (amount <= 0) continue;
+                found.push({ blockNum, burnAmount: `${amount} ${unit}`, timestamp });
             }
-            if(rows.length<limit)break;offset+=limit;await sleep(80);
+            if (rows.length < limit) break;
+            offset += limit;
+            await sleep(80);
         }
         return found.reverse();
-    }
-
-    const STEEM_GENESIS_TS = 1458835500; // block 1 at 2016-03-24T16:05:00 UTC
-    const blockTsCache = {};
-
-    async function getBlockTimestamp(blockNum) {
-        if (blockTsCache[blockNum] !== undefined) return blockTsCache[blockNum];
-        try {
-            const resp = await fetch(`https://sds.steemworld.org/block_api/getBlock/${blockNum}`);
-            const data = await resp.json();
-            if (data && data.result && data.result.block && data.result.block.timestamp) {
-                const d = new Date(data.result.block.timestamp + 'Z');
-                const ts = Math.floor(d.getTime() / 1000);
-                blockTsCache[blockNum] = ts;
-                return ts;
-            }
-        } catch(e) {}
-        return null;
-    }
-
-    async function binarySearchBlock(targetTs, lo, hi) {
-        // Binary search for the first block whose timestamp >= targetTs
-        // lo and hi are inclusive bounds
-        let best = hi;
-        while (lo <= hi) {
-            const mid = Math.floor((lo + hi) / 2);
-            const blockTs = await getBlockTimestamp(mid);
-            if (blockTs === null) { lo = mid + 1; continue; }
-            if (blockTs < targetTs) {
-                lo = mid + 1;
-            } else {
-                best = mid;
-                hi = mid - 1;
-            }
-        }
-        return best;
-    }
-
-    async function resolveBlockNumbers(foundBlocks, statusDiv) {
-        if (foundBlocks.length === 0) return;
-        statusDiv.innerText = `Resolving block numbers for ${foundBlocks.length} burn timestamps...`;
-        // Work with timestamps in ascending order, deduplicate
-        const sorted = [...foundBlocks].sort((a, b) => a.timestamp - b.timestamp);
-        const unique = [];
-        for (const item of sorted) {
-            if (unique.length === 0 || item.timestamp !== unique[unique.length - 1].timestamp) {
-                unique.push(item);
-            }
-        }
-        const n = unique.length;
-        if (n === 0) return;
-
-        // Step 1: Pick anchors every 100 timestamps
-        const ANCHOR_INTERVAL = 100;
-        const anchors = [];
-        for (let i = 0; i < n; i += ANCHOR_INTERVAL) {
-            anchors.push(i);
-        }
-        // Always include the last index as an anchor
-        if (anchors[anchors.length - 1] !== n - 1) anchors.push(n - 1);
-
-        statusDiv.innerText = `Resolving block numbers: searching ${anchors.length} anchor points...`;
-
-        // Step 2: Binary search for each anchor
-        for (let ai = 0; ai < anchors.length; ai++) {
-            const idx = anchors[ai];
-            const item = unique[idx];
-            let lo, hi;
-            if (ai === 0) {
-                // First anchor: estimate from genesis
-                const estimate = Math.max(1, Math.floor((item.timestamp - STEEM_GENESIS_TS) / 3) + 1);
-                const estTs = await getBlockTimestamp(estimate);
-                if (estTs === null) {
-                    lo = 1;
-                    hi = estimate + 1000000;
-                } else if (estTs < item.timestamp) {
-                    lo = estimate;
-                    const maxBlocks = Math.floor((item.timestamp - STEEM_GENESIS_TS) / 3) + 1;
-                    hi = Math.max(estimate + 1, Math.ceil(maxBlocks * 1.2));
-                } else {
-                    hi = estimate;
-                    lo = 1;
-                }
-            } else {
-                // Use previous anchor as lower bound
-                const prevIdx = anchors[ai - 1];
-                const prevItem = unique[prevIdx];
-                lo = prevItem.blockNum;
-                // Estimate upper bound from time delta
-                const deltaSec = item.timestamp - prevItem.timestamp;
-                const deltaBlocks = Math.max(1, Math.round(deltaSec / 3));
-                hi = lo + Math.ceil(deltaBlocks * 1.2);
-            }
-            item.blockNum = await binarySearchBlock(item.timestamp, lo, hi);
-            statusDiv.innerText = `Resolving block numbers: anchor ${ai + 1}/${anchors.length} (block ${item.blockNum.toLocaleString()})...`;
-            await sleep(30);
-        }
-
-        // Step 3: Fill in gaps between anchors using linear interpolation
-        for (let ai = 0; ai < anchors.length - 1; ai++) {
-            const leftIdx = anchors[ai];
-            const rightIdx = anchors[ai + 1];
-            const leftItem = unique[leftIdx];
-            const rightItem = unique[rightIdx];
-            const gapSize = rightIdx - leftIdx;
-            if (gapSize <= 1) continue;
-
-            statusDiv.innerText = `Resolving block numbers: filling gap ${ai + 1}/${anchors.length - 1} (${gapSize - 1} timestamps)...`;
-
-            for (let gi = leftIdx + 1; gi < rightIdx; gi++) {
-                const item = unique[gi];
-                // Linear interpolation between the two anchors
-                const ratio = (item.timestamp - leftItem.timestamp) / (rightItem.timestamp - leftItem.timestamp);
-                const estimate = leftItem.blockNum + Math.round(ratio * (rightItem.blockNum - leftItem.blockNum));
-                // Check the estimate
-                const estTs = await getBlockTimestamp(estimate);
-                if (estTs === null) {
-                    item.blockNum = estimate;
-                } else if (estTs === item.timestamp) {
-                    item.blockNum = estimate;
-                } else if (estTs < item.timestamp) {
-                    // Walk forward a few blocks
-                    let b = estimate + 1;
-                    while (b <= rightItem.blockNum) {
-                        const ts = await getBlockTimestamp(b);
-                        if (ts === null) { item.blockNum = b; break; }
-                        if (ts >= item.timestamp) { item.blockNum = b; break; }
-                        b++;
-                    }
-                    if (item.blockNum === undefined) item.blockNum = rightItem.blockNum;
-                } else {
-                    // Walk backward a few blocks
-                    let b = estimate - 1;
-                    while (b >= leftItem.blockNum) {
-                        const ts = await getBlockTimestamp(b);
-                        if (ts === null) { item.blockNum = b + 1; break; }
-                        if (ts < item.timestamp) { item.blockNum = b + 1; break; }
-                        b--;
-                    }
-                    if (item.blockNum === undefined) item.blockNum = leftItem.blockNum;
-                }
-                await sleep(30);
-            }
-        }
-
-        // Step 4: Copy block numbers to duplicate timestamps
-        for (const item of foundBlocks) {
-            if (item.blockNum === undefined) {
-                // Find the matching unique entry
-                const match = unique.find(u => u.timestamp === item.timestamp);
-                if (match) item.blockNum = match.blockNum;
-            }
-        }
     }
 
     async function fetchAllNullBurns(fromTime,toTime,statusDiv){
@@ -399,9 +273,7 @@
         try{
             const foundBlocks=await fetchAllUserBurns(username,statusDiv);
             if(foundBlocks.length===0){statusDiv.innerText="Scan complete. No @null burn operations found.";btn.disabled=false;return}
-            statusDiv.innerText=`Found ${foundBlocks.length} burn actions. Resolving block numbers from timestamps...`;
-            await resolveBlockNumbers(foundBlocks, statusDiv);
-            statusDiv.innerText=`Block numbers resolved. Preloading global burn ledger to check king status...`;
+            statusDiv.innerText=`Found ${foundBlocks.length} burn actions. Preloading global burn ledger to check king status...`;
             const validTimestamps=foundBlocks.map(b=>b.timestamp).filter(t=>typeof t!=='undefined'&&t!==null);
             let burnsByKey={};if(validTimestamps.length>0){const ledgerFrom=Math.min(...validTimestamps);const ledgerTo=Math.max(...validTimestamps);burnsByKey=await fetchAllNullBurns(ledgerFrom,ledgerTo,statusDiv)}
             statusDiv.innerText=`Ledger preloaded. Checking burn-king status for ${foundBlocks.length} burns...`;

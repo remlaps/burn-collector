@@ -16,22 +16,24 @@ The engine analyzes each block number against structural patterns, recreational 
 *   **Palindrome:** Block numbers that read exactly the same forward and backward (e.g., `8455548`).
 *   **Radar:** An even-length block number where the first half matches the second half identically (e.g., `439439`).
 *   **3-Digit Bookend:** Block numbers where the first 3 digits and the last 3 digits match perfectly (e.g., `714...714`).
+*   **4-Digit Bookend:** Block numbers where the first 4 digits and the last 4 digits match perfectly (e.g., `1234...1234`).
+*   **Mirror 3-Straight:** Block numbers containing a mirrored straight: 3-digit ascending (or descending) straight followed immediately by the same in reverse (e.g., `123321`, `321123`).
+*   **Mirror 4-Straight:** Block numbers containing a mirrored straight: 4-digit ascending (or descending) straight followed immediately by the same in reverse (e.g., `1234321`, `43211234`).
 *   **Bi-Class:** Numbers composed entirely of only two distinct digits (e.g., `8118818`).
-*   **5 of a Kind:** A block where a single digit appears exactly 5 times (e.g., `83858828`).
-*   **6 of a Kind:** A block where a single digit appears exactly 6 times.
-*   **7 of a Kind:** A block where a single digit appears exactly 7 times.
-*   **8 of a Kind:** A block where a single digit appears exactly 8 times.
-*   **9 of a Kind:** A block where a single digit appears exactly 9 times.
-*   **10 of a Kind:** A block where a single digit appears exactly 10 times.
+*   **5+ of a Kind:** A block where a single digit appears at least 5 times.
+*   **6+ of a Kind:** A block where a single digit appears at least 6 times.
+*   **7+ of a Kind:** A block where a single digit appears at least 7 times.
+*   **8+ of a Kind:** A block where a single digit appears at least 8 times.
+*   **9+ of a Kind:** A block where a single digit appears at least 9 times (the maximum possible since block numbers have 9 digits).
 *   **Straight:** A block containing 5 consecutive ascending digits (e.g., `12345`, `34567`).
 *   **Straight Ext:** A block containing 6-10 consecutive ascending digits.
 *   **Full House:** A block with 3 of one digit and 2 of another (e.g., `33344`, `55522`).
 *   **Full House Ext:** An extended full house with 4+3, 5+4, or 6+5 of two distinct digits.
-*   **4 Zeroes:** A block ending in exactly 4 consecutive zeroes (e.g., `8420000`).
-*   **5 Zeroes:** A block ending in exactly 5 consecutive zeroes.
-*   **6 Zeroes:** A block ending in exactly 6 consecutive zeroes.
-*   **7 Zeroes:** A block ending in exactly 7 consecutive zeroes.
-*   **8 Zeroes:** A block ending in exactly 8 consecutive zeroes (e.g., `8400000000`).
+*   **4+ Zeroes:** A block ending in at least 4 consecutive zeroes (e.g., `8420000`).
+*   **5+ Zeroes:** A block ending in at least 5 consecutive zeroes.
+*   **6+ Zeroes:** A block ending in at least 6 consecutive zeroes.
+*   **7+ Zeroes:** A block ending in at least 7 consecutive zeroes.
+*   **8+ Zeroes:** A block ending in at least 8 consecutive zeroes (e.g., `8400000000`).
 
 ### Number Theory Properties
 
@@ -54,8 +56,10 @@ The engine analyzes each block number against structural patterns, recreational 
 
 1.  **API Streaming:** The app securely hits the public Steem Data Service (`SDS`) history API via HTTPS endpoint frameworks to pool transfer histories.
 2.  **Filtration Loop:** It isolates transactions going to `@null` and maps out their raw block sequences.
-3.  **Matrix Analysis:** It processes the block data array dynamically via client-side JavaScript.
-4.  **UI Assembly:** It builds high-density visual metric cards styled with custom context-aware borders and labels on your local browser dashboard.
+3.  **Block Resolution:** Since `transfers_api` returns timestamps without block numbers, the engine performs binary search via `blocks_api/getBlock` to map each burn timestamp to its block number. During this process, all transfer-to-null operations in each visited block are indexed into a global burn ledger (no extra API calls needed).
+4.  **Dominance Check:** Using the pre-built burn ledger, it evaluates whether your account was the highest STEEM/SBD burner in each block.
+5.  **Matrix Analysis:** It processes the block data array dynamically via client-side JavaScript.
+6.  **UI Assembly:** It builds high-density visual metric cards styled with custom context-aware borders and labels on your local browser dashboard. Stats with zero entries are hidden by default; click "Show Zero Categories" to reveal them.
 
 ---
 
