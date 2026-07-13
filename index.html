@@ -215,8 +215,10 @@
     function isHappyNumber(num){let seen=new Set();while(num!==1&&!seen.has(num)){seen.add(num);let sum=0;while(num>0){let digit=num%10;sum+=digit*digit;num=Math.floor(num/10)}num=sum}return num===1}
     function is3DigitBookend(str){if(str.length<6)return false;return str.substring(0,3)===str.substring(str.length-3)}
     function is4DigitBookend(str){if(str.length<8)return false;return str.substring(0,4)===str.substring(str.length-4)}
-    function isMirror3Straight(str){if(str.length<6)return false;for(let start=0;start<=str.length-6;start++){const a=str[start],b=str[start+1],c=str[start+2];if(str[start+3]===c&&str[start+4]===b&&str[start+5]===a)return true}return false}
-    function isMirror4Straight(str){if(str.length<8)return false;for(let start=0;start<=str.length-8;start++){const a=str[start],b=str[start+1],c=str[start+2],d=str[start+3];if(str[start+4]===d&&str[start+5]===c&&str[start+6]===b&&str[start+7]===a)return true}return false}
+    function isAscendingRun(digits){for(let i=1;i<digits.length;i++){if(digits[i]!==digits[i-1]+1)return false}return true}
+    function isDescendingRun(digits){for(let i=1;i<digits.length;i++){if(digits[i]!==digits[i-1]-1)return false}return true}
+    function isMirror3Straight(str){if(str.length<6)return false;for(let start=0;start<=str.length-6;start++){const a=+str[start],b=+str[start+1],c=+str[start+2];if(!(isAscendingRun([a,b,c])||isDescendingRun([a,b,c])))continue;if(+str[start+3]===c&&+str[start+4]===b&&+str[start+5]===a)return true}return false}
+    function isMirror4Straight(str){if(str.length<8)return false;for(let start=0;start<=str.length-8;start++){const a=+str[start],b=+str[start+1],c=+str[start+2],d=+str[start+3];if(!(isAscendingRun([a,b,c,d])||isDescendingRun([a,b,c,d])))continue;if(+str[start+4]===d&&+str[start+5]===c&&+str[start+6]===b&&+str[start+7]===a)return true}return false}
     function isMillennium(num){return num%1000===0}
     function countTrailingZeroes(str){const match=str.match(/0+$/);return match?match[0].length:0}
     function countMaxSameDigit(str){const counts={};for(let char of str){counts[char]=(counts[char]||0)+1}let max=0;for(let char in counts){if(counts[char]>max)max=counts[char]}return max}
