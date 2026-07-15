@@ -6,7 +6,7 @@ Phoenix Prime is an open-source, client-side web application designed to scan an
 
 The tool goes beyond basic history scanning by actively cross-examining the global ledger state for competitive validation:
 
-*   **BurnMaxer (STEEM/SBD):** When a personal burn is identified, the engine dynamically fetches the entire parent block (`condenser_api.get_block`). It aggregates all competitive transfer operations directed to `@null` within those 3 seconds, evaluating whether your account was the absolute highest burner of that asset class in the entire block.
+*   **BurnMaxxer (STEEM/SBD):** When a personal burn is identified, the engine dynamically fetches the entire parent block (`condenser_api.get_block`). It aggregates all competitive transfer operations directed to `@null` within those 3 seconds, evaluating whether your account was the absolute highest burner of that asset class in the entire block.
 
 ## Block Archeology Classifications
 
@@ -27,11 +27,18 @@ The engine analyzes each block number against structural patterns, recreational 
 *   **8+ of a Kind:** A block where a single digit appears at least 8 times.
 *   **9+ of a Kind:** A block where a single digit appears at least 9 times (the maximum possible since block numbers have 9 digits).
 *   **Straight:** A block containing 5 consecutive ascending or descending digits (e.g., `12345`, `34567`, `98765`).
-*   **Unordered Straight 5:** A block containing all 5 digits of a straight in any order (e.g., `35142` contains `1,2,3,4,5`).
-*   **Straight Ext:** A block containing 6-10 consecutive ascending digits.
-*   **Unordered Straight Ext:** A block containing all 6+ digits of a straight in any order (e.g., `546372` contains `2,3,4,5,6,7`).
-*   **Full House:** A block with 3 of one digit and 2 of another (e.g., `33344`, `55522`).
-*   **Full House Ext:** An extended full house with 4+3, 5+4, or 6+5 of two distinct digits.
+*   **Straight-6:** A block containing 6 consecutive ascending or descending digits.
+*   **Straight-7:** A block containing 7 consecutive ascending or descending digits.
+*   **Straight-8:** A block containing 8 consecutive ascending or descending digits.
+*   **Straight-9:** A block containing 9 consecutive ascending or descending digits.
+*   **UnStr 5 (Unordered Straight 5):** A block containing all 5 digits of a straight in any order (e.g., `35142` contains `1,2,3,4,5`).
+*   **UnStr 6 (Unordered Straight 6):** A block containing all 6 digits of a straight in any order (e.g., `546372` contains `2,3,4,5,6,7`).
+*   **UnStr 7 (Unordered Straight 7):** A block containing all 7 digits of a straight in any order.
+*   **UnStr 8 (Unordered Straight 8):** A block containing all 8 digits of a straight in any order.
+*   **UnStr 9 (Unordered Straight 9):** A block containing all 9 digits of a straight in any order.
+*   **Full House 3-2:** A block with 3 of one digit and 2 of another (e.g., `33344`, `55522`).
+*   **Full House 4-3:** A block with 4 of one digit and 3 of another.
+*   **Full House 5-4:** A block with 5 of one digit and 4 of another.
 *   **4+ Zeroes:** A block ending in at least 4 consecutive zeroes (e.g., `8420000`).
 *   **5+ Zeroes:** A block ending in at least 5 consecutive zeroes.
 *   **6+ Zeroes:** A block ending in at least 6 consecutive zeroes.
