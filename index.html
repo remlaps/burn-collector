@@ -202,7 +202,7 @@
                 <p style="color: var(--text-muted); font-size: 0.8rem; margin: -0.5rem 0 1rem 0; font-style: italic;">Note: Blocks can have multiple mathematical/structural properties, so category counts may overlap (sum may exceed total).</p>
                 <button id="toggle-zeroes-btn" onclick="toggleZeroEntries()" style="padding: 0.4rem 1rem; font-size: 0.8rem; margin-bottom: 1rem; background-color: #475569;">Hide Zero Entries</button>
                 <div class="summary-grid">
-                    <div class="summary-stat" style="border-color: #4b5563;"><div class="stat-label lbl-total" title="Total number of blocks where you were the BurnMaxer.">Total Burned</div><div id="stat-total" class="stat-val">0</div></div>
+                    <div class="summary-stat" style="border-color: #4b5563;"><div class="stat-label lbl-total" title="Total number of blocks where you were the BurnMaxxer.">Total Burned</div><div id="stat-total" class="stat-val">0</div></div>
                     <div class="summary-stat" style="border-color: var(--border-even);"><div class="stat-label lbl-even" title="Block number is evenly divisible by 2.">Even</div><div id="stat-even" class="stat-val">0</div></div>
                     <div class="summary-stat" style="border-color: var(--border-odd);"><div class="stat-label lbl-odd" title="Block number is not evenly divisible by 2.">Odd</div><div id="stat-odd" class="stat-val">0</div></div>
                     <div class="summary-stat" style="border-color: var(--border-pal);"><div class="stat-label lbl-pal" title="Block number reads the same forwards and backwards.">Palindrome</div><div id="stat-pal" class="stat-val">0</div></div>
@@ -225,19 +225,26 @@
                     <div class="summary-stat" style="border-color: var(--border-bookend4);"><div class="stat-label lbl-bookend4" title="First 4 digits match the last 4 digits.">4-Dig Bookend</div><div id="stat-bookend4" class="stat-val">0</div></div>
                     <div class="summary-stat" style="border-color: var(--border-mirror3);"><div class="stat-label lbl-mirror3" title="3-digit mirrored straight (e.g., 123321 or 321123).">Mirror 3-Straight</div><div id="stat-mirror3" class="stat-val">0</div></div>
                     <div class="summary-stat" style="border-color: var(--border-mirror4);"><div class="stat-label lbl-mirror4" title="4-digit ascending/descending straight followed by same in reverse (e.g., 1234321, 43211234).">Mirror 4-Straight</div><div id="stat-mirror4" class="stat-val">0</div></div>
-                    <div class="summary-stat" style="border-color: var(--border-straight);"><div class="stat-label lbl-straight" title="Block number contains 5 consecutive consecutive ascending digits (e.g., 12345, 34567) or descending (54321, 76543).">Straight</div><div id="stat-straight" class="stat-val">0</div></div>
-                    <div class="summary-stat" style="border-color: var(--border-unstraight5);"><div class="stat-label lbl-unstraight5" title="Block number contains 5 non-consecutive digits that form a straight (e.g., 35142 contains 1,2,3,4,5).">Unordered Straight 5</div><div id="stat-unstraight5" class="stat-val">0</div></div>
-                    <div class="summary-stat" style="border-color: var(--border-straight-ext);"><div class="stat-label lbl-straight-ext" title="Block number contains 6-10 consecutive ascending or descending digits.">Straight Ext</div><div id="stat-straight-ext" class="stat-val">0</div></div>
-                    <div class="summary-stat" style="border-color: var(--border-unstraight-ext);"><div class="stat-label lbl-unstraight-ext" title="Block number contains 6+ non-consecutive digits that form a straight (e.g., 546372 contains 2,3,4,5,6,7).">Unordered Straight Ext</div><div id="stat-unstraight-ext" class="stat-val">0</div></div>
-                    <div class="summary-stat" style="border-color: var(--border-fullhouse);"><div class="stat-label lbl-fullhouse" title="3 of one digit and 2 of another (e.g., 33344, 55522).">Full House</div><div id="stat-fullhouse" class="stat-val">0</div></div>
-                    <div class="summary-stat" style="border-color: var(--border-fullhouse-ext);"><div class="stat-label lbl-fullhouse-ext" title="Extended: 4+3, 5+4, or 6+5 of two distinct digits.">Full House Ext</div><div id="stat-fullhouse-ext" class="stat-val">0</div></div>
+                    <div class="summary-stat" style="border-color: var(--border-straight);"><div class="stat-label lbl-straight" title="Block number contains 5 consecutive ascending or descending digits (e.g., 12345, 54321).">Straight</div><div id="stat-straight" class="stat-val">0</div></div>
+                    <div class="summary-stat" style="border-color: var(--border-straight-ext);"><div class="stat-label lbl-straight-ext" title="Block number contains 6 consecutive ascending or descending digits.">Straight-6</div><div id="stat-straight6" class="stat-val">0</div></div>
+                    <div class="summary-stat" style="border-color: var(--border-straight-ext);"><div class="stat-label lbl-straight-ext" title="Block number contains 7 consecutive ascending or descending digits.">Straight-7</div><div id="stat-straight7" class="stat-val">0</div></div>
+                    <div class="summary-stat" style="border-color: var(--border-straight-ext);"><div class="stat-label lbl-straight-ext" title="Block number contains 8 consecutive ascending or descending digits.">Straight-8</div><div id="stat-straight8" class="stat-val">0</div></div>
+                    <div class="summary-stat" style="border-color: var(--border-straight-ext);"><div class="stat-label lbl-straight-ext" title="Block number contains 9 consecutive ascending or descending digits.">Straight-9</div><div id="stat-straight9" class="stat-val">0</div></div>
+                    <div class="summary-stat" style="border-color: var(--border-unstraight5);"><div class="stat-label lbl-unstraight5" title="Block number contains 5 non-consecutive digits that form a straight (e.g., 35142 contains 1,2,3,4,5).">UnStr 5</div><div id="stat-unstraight5" class="stat-val">0</div></div>
+                    <div class="summary-stat" style="border-color: var(--border-unstraight-ext);"><div class="stat-label lbl-unstraight-ext" title="Block number contains 6 non-consecutive digits that form a straight (e.g., 546372 contains 2,3,4,5,6,7).">UnStr 6</div><div id="stat-unstraight6" class="stat-val">0</div></div>
+                    <div class="summary-stat" style="border-color: var(--border-unstraight-ext);"><div class="stat-label lbl-unstraight-ext" title="Block number contains 7 non-consecutive digits that form a straight.">UnStr 7</div><div id="stat-unstraight7" class="stat-val">0</div></div>
+                    <div class="summary-stat" style="border-color: var(--border-unstraight-ext);"><div class="stat-label lbl-unstraight-ext" title="Block number contains 8 non-consecutive digits that form a straight.">UnStr 8</div><div id="stat-unstraight8" class="stat-val">0</div></div>
+                    <div class="summary-stat" style="border-color: var(--border-unstraight-ext);"><div class="stat-label lbl-unstraight-ext" title="Block number contains 9 non-consecutive digits that form a straight.">UnStr 9</div><div id="stat-unstraight9" class="stat-val">0</div></div>
+                    <div class="summary-stat" style="border-color: var(--border-fullhouse);"><div class="stat-label lbl-fullhouse" title="3 of one digit and 2 of another (e.g., 33344, 55522).">Full House 3-2</div><div id="stat-fullhouse" class="stat-val">0</div></div>
+                    <div class="summary-stat" style="border-color: var(--border-fullhouse-ext);"><div class="stat-label lbl-fullhouse-ext" title="4+3 of two distinct digits.">Full House 4-3</div><div id="stat-fullhouse-ext" class="stat-val">0</div></div>
+                    <div class="summary-stat" style="border-color: var(--border-straight-ext);"><div class="stat-label lbl-straight-ext" title="5+4 of two distinct digits.">Full House 5-4</div><div id="stat-fullhouse5-4" class="stat-val">0</div></div>
                     <div class="summary-stat" style="border-color: var(--border-prime);"><div class="stat-label lbl-prime" title="Block number has no positive divisors other than 1 and itself.">Phoenix Prime</div><div id="stat-prime" class="stat-val">0</div></div>
                     <div class="summary-stat" style="border-color: var(--border-twin);"><div class="stat-label lbl-twin" title="Block number p where p-2 or p+2 is also prime (twin prime).">Twin Prime</div><div id="stat-twin" class="stat-val">0</div></div>
                     <div class="summary-stat" style="border-color: var(--border-fib);"><div class="stat-label lbl-fib" title="Block number is part of the Fibonacci sequence.">Fibonacci</div><div id="stat-fib" class="stat-val">0</div></div>
                     <div class="summary-stat" style="border-color: var(--border-mile);"><div class="stat-label lbl-mile" title="Block number is evenly divisible by 100.">Century</div><div id="stat-mile" class="stat-val">0</div></div>
                     <div class="summary-stat" style="border-color: var(--border-bin);"><div class="stat-label lbl-bin" title="Block number consists only of digits 0 and 1.">Binary</div><div id="stat-bin" class="stat-val">0</div></div>
                     <div class="summary-stat" style="border-color: var(--border-std);"><div class="stat-label lbl-std" title="Block has no special mathematical or structural traits.">Standard</div><div id="stat-std" class="stat-val">0</div></div>
-                    <div class="summary-stat" style="border-color: var(--accent-gold);"><div class="stat-label" style="color: var(--accent-gold);" title="You burned more of this asset than any other account in this block.">BurnMaxer</div><div id="stat-king" class="stat-val">0</div></div>
+                    <div class="summary-stat" style="border-color: var(--accent-gold);"><div class="stat-label" style="color: var(--accent-gold);" title="You burned more of this asset than any other account in this block.">BurnMaxxer</div><div id="stat-king" class="stat-val">0</div></div>
                 </div>
             </div>
             <div id="results" class="results-grid"></div>
@@ -303,9 +310,13 @@
     function longestConsecutiveRun(str){const d=str.split('').map(Number);let best=1;let curA=1;let curD=1;for(let i=1;i<d.length;i++){if(d[i]===d[i-1]+1){curA++;curD=1}else if(d[i]===d[i-1]-1){curD++;curA=1}else{curA=1;curD=1}if(curA>best)best=curA;if(curD>best)best=curD}return best}
     function hasUnorderedStraight(str, minLen){const unique=[...new Set(str.split('').map(Number))].sort((a,b)=>a-b);if(unique.length<minLen)return false;let best=1;let cur=1;for(let i=1;i<unique.length;i++){if(unique[i]===unique[i-1]+1){cur++;if(cur>best)best=cur}else{cur=1}if(best>=minLen)return true}return best>=minLen}
     function hasUnorderedStraight5(str){return hasUnorderedStraight(str,5)}
-    function hasUnorderedStraightExt(str){return hasUnorderedStraight(str,6)}
-    function isFullHouse(str){const counts={};for(let char of str){counts[char]=(counts[char]||0)+1}const vals=Object.values(counts).sort((a,b)=>b-a);if(vals.length>=2){const a=vals[0],b=vals[1];if(a===3&&b===2)return true;if(a>=4&&b>=3)return true;if(a>=5&&b>=4)return true;if(a>=6&&b>=5)return true}return false}
-    function isExtendedFullHouse(str){const counts={};for(let char of str){counts[char]=(counts[char]||0)+1}const vals=Object.values(counts).sort((a,b)=>b-a);if(vals.length>=2){const a=vals[0],b=vals[1];if(a>=4&&b>=3)return true;if(a>=5&&b>=4)return true;if(a>=6&&b>=5)return true}return false}
+    function hasUnorderedStraight6(str){return hasUnorderedStraight(str,6)}
+    function hasUnorderedStraight7(str){return hasUnorderedStraight(str,7)}
+    function hasUnorderedStraight8(str){return hasUnorderedStraight(str,8)}
+    function hasUnorderedStraight9(str){return hasUnorderedStraight(str,9)}
+    function isFullHouse(str){const counts={};for(let char of str){counts[char]=(counts[char]||0)+1}const vals=Object.values(counts).sort((a,b)=>b-a);if(vals.length>=2){const a=vals[0],b=vals[1];if(a===3&&b===2)return true}return false}
+    function isExtendedFullHouse(str){const counts={};for(let char of str){counts[char]=(counts[char]||0)+1}const vals=Object.values(counts).sort((a,b)=>b-a);if(vals.length>=2){const a=vals[0],b=vals[1];if(a>=4&&b>=3)return true;if(a>=5&&b>=4)return true}return false}
+    function isFullHouse54(str){const counts={};for(let char of str){counts[char]=(counts[char]||0)+1}const vals=Object.values(counts).sort((a,b)=>b-a);if(vals.length>=2){const a=vals[0],b=vals[1];if(a>=5&&b>=4)return true;if(a>=6&&b>=5)return true}return false}
     const sleep=ms=>new Promise(r=>setTimeout(r,ms));
     function formatBlockTime(ts){
         if(ts===null||typeof ts==='undefined')return 'Unknown';
@@ -467,8 +478,11 @@
                 let t;
                 if (typeof ts === 'number') {
                     t = ts;
+                    // SDS API returns seconds-based timestamps; convert to ms for Date.now() comparison
+                    if (t < 1e12) t *= 1000;
                 } else if (typeof ts === 'string' && /^\d+$/.test(ts)) {
-                    t = Number(ts.length >= 13 ? ts : ts * 1000);
+                    t = Number(ts);
+                    if (t < 1e12) t *= 1000;
                 } else {
                     t = new Date(ts + (ts.endsWith('Z') ? '' : 'Z')).getTime();
                 }
@@ -514,18 +528,22 @@
         if (isMirror4Straight(s)) { badgeHTML += '<span class="badge badge-mirror4" title="4-digit ascending/descending straight followed by same in reverse (e.g., 1234321, 43211234).">Mirror 4-Straight</span>'; hasSpecialTrait = true; }
         const run = longestConsecutiveRun(s);
         if (run === 5) { badgeHTML += '<span class="badge badge-straight" title="Block number contains 5 consecutive ascending or descending digits.">Straight</span>'; hasSpecialTrait = true; }
-        else if (run >= 6) { badgeHTML += '<span class="badge badge-straight-ext" title="Block number contains 6-10 consecutive ascending or descending digits.">Straight Ext</span>'; hasSpecialTrait = true; }
-        if (isFullHouse(s)) { badgeHTML += '<span class="badge badge-fullhouse" title="3 of one digit and 2 of another, or larger combinations (4+3, 5+4, 6+5).">Full House</span>'; hasSpecialTrait = true; }
-        if (isExtendedFullHouse(s)) { badgeHTML += '<span class="badge badge-fullhouse-ext" title="Extended: 4+3, 5+4, or 6+5 of two digits.">Full House Ext</span>'; hasSpecialTrait = true; }
+        else if (run >= 6) { badgeHTML += `<span class="badge badge-straight-ext" title="Block number contains ${run} consecutive ascending or descending digits.">Straight-${run}</span>`; hasSpecialTrait = true; }
+        if (isFullHouse(s)) { badgeHTML += '<span class="badge badge-fullhouse" title="3 of one digit and 2 of another (e.g., 33344, 55522).">Full House 3-2</span>'; hasSpecialTrait = true; }
+        if (isExtendedFullHouse(s)) { badgeHTML += '<span class="badge badge-fullhouse-ext" title="4 of one digit and 3 of another.">Full House 4-3</span>'; hasSpecialTrait = true; }
+        if (isFullHouse54(s)) { badgeHTML += '<span class="badge badge-straight-ext" title="5 of one digit and 4 of another.">Full House 5-4</span>'; hasSpecialTrait = true; }
         if (hasUnorderedStraight5(s)) { badgeHTML += '<span class="badge badge-unstraight5" title="Block number contains 5 non-consecutive digits that form a straight (e.g., 35142 contains 1,2,3,4,5).">Unordered Straight 5</span>'; hasSpecialTrait = true; }
-        if (hasUnorderedStraightExt(s)) { badgeHTML += '<span class="badge badge-unstraight-ext" title="Block number contains 6+ non-consecutive digits that form a straight (e.g., 546372 contains 2,3,4,5,6,7).">Unordered Straight Ext</span>'; hasSpecialTrait = true; }
+        if (hasUnorderedStraight6(s)) { badgeHTML += '<span class="badge badge-unstraight-ext" title="Block number contains 6 non-consecutive digits that form a straight (e.g., 546372 contains 2,3,4,5,6,7).">Unordered Straight 6</span>'; hasSpecialTrait = true; }
+        if (hasUnorderedStraight7(s)) { badgeHTML += '<span class="badge badge-unstraight-ext" title="Block number contains 7 non-consecutive digits that form a straight.">Unordered Straight 7</span>'; hasSpecialTrait = true; }
+        if (hasUnorderedStraight8(s)) { badgeHTML += '<span class="badge badge-unstraight-ext" title="Block number contains 8 non-consecutive digits that form a straight.">Unordered Straight 8</span>'; hasSpecialTrait = true; }
+        if (hasUnorderedStraight9(s)) { badgeHTML += '<span class="badge badge-unstraight-ext" title="Block number contains 9 non-consecutive digits that form a straight.">Unordered Straight 9</span>'; hasSpecialTrait = true; }
         if (isPrime(n)) { badgeHTML += '<span class="badge badge-prime" title="Block number has no positive divisors other than 1 and itself.">Phoenix Prime</span>'; hasSpecialTrait = true; }
         if (isTwinPrime(n)) { badgeHTML += '<span class="badge badge-twin" title="Block number p where p-2 or p+2 is also prime (twin prime).">Twin Prime</span>'; hasSpecialTrait = true; }
         if (isFibonacci(n)) { badgeHTML += '<span class="badge badge-fib" title="Block number is part of the Fibonacci sequence.">Fibonacci Helix</span>'; hasSpecialTrait = true; }
         if (isMilestone(n)) { badgeHTML += '<span class="badge badge-milestone" title="Block number is evenly divisible by 100.">Century Block</span>'; hasSpecialTrait = true; }
         if (isBinary(n)) { badgeHTML += '<span class="badge badge-binary" title="Block number consists only of digits 0 and 1.">Binary Code</span>'; hasSpecialTrait = true; }
 
-        const crownHTML = '<span class="crown-badge">👑 BurnMaxer</span>';
+        const crownHTML = '<span class="crown-badge">👑 BurnMaxxer</span>';
         const dominanceHTML = item.dominance && item.dominance.competitorsCount > 1
             ? `<div class="dominance-note">Dominated block over ${item.dominance.competitorsCount - 1} other burner(s).</div>`
             : `<div class="dominance-note">Solo burner in this block.</div>`;
@@ -542,19 +560,20 @@
         const username=document.getElementById('username').value.trim().toLowerCase();
         const statusDiv=document.getElementById('status');const resultsDiv=document.getElementById('results');const dashboard=document.getElementById('summary-dashboard');const btn=document.getElementById('scan-btn');
         const filterBar=document.getElementById('filter-bar');
-            if(!username){statusDiv.innerText="Please enter a username.";return}
-        btn.disabled=true;resultsDiv.innerHTML="";dashboard.style.display="none";statusDiv.innerText=selectedTimeRangeDays>0?`Querying SDS for burns in the last ${selectedTimeRangeDays} day(s)...`:"Querying SDS for full burn history...";
-        const progressContainerReset=document.getElementById('progress-container');const progressBarFillReset=document.getElementById('progress-bar-fill');
-        if(progressContainerReset)progressContainerReset.style.display='none';if(progressBarFillReset)progressBarFillReset.style.width='0%';
-        document.querySelectorAll('.summary-stat').forEach(stat => stat.classList.remove('hidden-zero'));
-        let stats={total:0,even:0,odd:0,palindrome:0,harshad:0,biclass:0,radar:0,happy:0,bookend:0,mill:0,zeroes4:0,zeroes5:0,zeroes6:0,zeroes7:0,zeroes8:0,kind5:0,kind6:0,kind7:0,kind8:0,kind9:0,bookend4:0,mirror3:0,mirror4:0,straight:0,straightExt:0,unstraight5:0,unstraightExt:0,fullhouse:0,fullhouseExt:0,prime:0,twin:0,fib:0,milestone:0,binary:0,standard:0,king:0};
+        const progressContainer=document.getElementById('progress-container');const progressBarFill=document.getElementById('progress-bar-fill');
+            if(!username){if(statusDiv)statusDiv.innerText="Please enter a username.";return}
+        if(!btn||!resultsDiv||!statusDiv){console.error('Required DOM elements not found');return}
+        btn.disabled=true;resultsDiv.innerHTML="";if(dashboard)dashboard.style.display="none";if(statusDiv)statusDiv.innerText=selectedTimeRangeDays>0?`Querying SDS for burns in the last ${selectedTimeRangeDays} day(s)...`:"Querying SDS for full burn history...";
+        if(progressContainer)progressContainer.style.display='none';if(progressBarFill)progressBarFill.style.width='0%';
+        const summaryStats=document.querySelectorAll('.summary-stat');if(summaryStats.length>0)summaryStats.forEach(stat => stat.classList.remove('hidden-zero'));
+        let stats={total:0,even:0,odd:0,palindrome:0,harshad:0,biclass:0,radar:0,happy:0,bookend:0,mill:0,zeroes4:0,zeroes5:0,zeroes6:0,zeroes7:0,zeroes8:0,kind5:0,kind6:0,kind7:0,kind8:0,kind9:0,bookend4:0,mirror3:0,mirror4:0,straight:0,straight6:0,straight7:0,straight8:0,straight9:0,unstraight5:0,unstraight6:0,unstraight7:0,unstraight8:0,unstraight9:0,fullhouse:0,fullhouseExt:0,fullhouse54:0,prime:0,twin:0,fib:0,milestone:0,binary:0,standard:0,king:0};
         try{
             const foundBlocks=await fetchAllUserBurns(username,statusDiv,selectedTimeRangeDays);
-            if(foundBlocks.length===0){statusDiv.innerText="Scan complete. No @null burn operations found.";btn.disabled=false;return}
-            statusDiv.innerText=`Found ${foundBlocks.length} burn actions. Preloading global burn ledger to check king status...`;
+            if(foundBlocks.length===0){if(statusDiv)statusDiv.innerText="Scan complete. No @null burn operations found.";btn.disabled=false;return}
+            if(statusDiv)statusDiv.innerText=`Found ${foundBlocks.length} burn actions. Preloading global burn ledger to check king status...`;
             const validTimestamps=foundBlocks.map(b=>b.timestamp).filter(t=>typeof t!=='undefined'&&t!==null);
             let burnsByKey={};if(validTimestamps.length>0){const ledgerFrom=Math.min(...validTimestamps);const ledgerTo=Math.max(...validTimestamps);burnsByKey=await fetchAllNullBurns(ledgerFrom,ledgerTo,statusDiv)}
-            statusDiv.innerText=`Ledger preloaded. Checking burn-king status for ${foundBlocks.length} burns...`;
+            if(statusDiv)statusDiv.innerText=`Ledger preloaded. Checking burn-king status for ${foundBlocks.length} burns...`;
             const dominanceResults=foundBlocks.map(item=>{const amountStrParts=String(item.burnAmount).split(' ');if(amountStrParts.length!==2)return null;const[amountStr,symbol]=amountStrParts;const parsedAmount=parseFloat(amountStr)||0;return lookupDominance(burnsByKey,username,parsedAmount,symbol,item.timestamp)});
             const kingBlocks=[];for(let i=0;i<foundBlocks.length;i++){const dominance=dominanceResults[i];if(dominance&&dominance.isHighest){kingBlocks.push({item:foundBlocks[i],dominance,username})}}
             if(kingBlocks.length===0){statusDiv.innerText=`Scan complete. Found ${foundBlocks.length} burn(s), but none were burn-king for their block.`;btn.disabled=false;return}
@@ -581,10 +600,13 @@
                 if(is4DigitBookend(s)){stats.bookend4++;hasSpecialTrait=true}
                 if(isMirror3Straight(s)){stats.mirror3++;hasSpecialTrait=true}
                 if(isMirror4Straight(s)){stats.mirror4++;hasSpecialTrait=true}
-                const run=longestConsecutiveRun(s);if(run===5){stats.straight++;hasSpecialTrait=true}else if(run>=6){stats.straightExt++;hasSpecialTrait=true}
+                const run=longestConsecutiveRun(s);if(run===5){stats.straight++;hasSpecialTrait=true}else if(run===6){stats.straight6++;hasSpecialTrait=true}else if(run===7){stats.straight7++;hasSpecialTrait=true}else if(run===8){stats.straight8++;hasSpecialTrait=true}else if(run>=9){stats.straight9++;hasSpecialTrait=true}
                 if(hasUnorderedStraight5(s)){stats.unstraight5++;hasSpecialTrait=true}
-                if(hasUnorderedStraightExt(s)){stats.unstraightExt++;hasSpecialTrait=true}
-                if(isFullHouse(s)){stats.fullhouse++;hasSpecialTrait=true}if(isExtendedFullHouse(s)){stats.fullhouseExt++;hasSpecialTrait=true}
+                if(hasUnorderedStraight6(s)){stats.unstraight6++;hasSpecialTrait=true}
+                if(hasUnorderedStraight7(s)){stats.unstraight7++;hasSpecialTrait=true}
+                if(hasUnorderedStraight8(s)){stats.unstraight8++;hasSpecialTrait=true}
+                if(hasUnorderedStraight9(s)){stats.unstraight9++;hasSpecialTrait=true}
+                if(isFullHouse(s)){stats.fullhouse++;hasSpecialTrait=true}if(isExtendedFullHouse(s)){stats.fullhouseExt++;hasSpecialTrait=true}if(isFullHouse54(s)){stats.fullhouse54++;hasSpecialTrait=true}
                 if(isPrime(n)){stats.prime++;hasSpecialTrait=true}
                 if(isTwinPrime(n)){stats.twin++;hasSpecialTrait=true}
                 if(isFibonacci(n)){stats.fib++;hasSpecialTrait=true}
@@ -592,7 +614,7 @@
                 if(!hasSpecialTrait){stats.standard++}
             });
 
-            document.getElementById('stat-total').innerText=stats.total.toLocaleString();document.getElementById('stat-even').innerText=stats.even.toLocaleString();document.getElementById('stat-odd').innerText=stats.odd.toLocaleString();document.getElementById('stat-pal').innerText=stats.palindrome.toLocaleString();document.getElementById('stat-harshad').innerText=stats.harshad.toLocaleString();document.getElementById('stat-biclass').innerText=stats.biclass.toLocaleString();document.getElementById('stat-radar').innerText=stats.radar.toLocaleString();document.getElementById('stat-happy').innerText=stats.happy.toLocaleString();document.getElementById('stat-bookend').innerText=stats.bookend.toLocaleString();document.getElementById('stat-mill').innerText=stats.mill.toLocaleString();document.getElementById('stat-zeroes4').innerText=stats.zeroes4.toLocaleString();document.getElementById('stat-zeroes5').innerText=stats.zeroes5.toLocaleString();document.getElementById('stat-zeroes6').innerText=stats.zeroes6.toLocaleString();document.getElementById('stat-zeroes7').innerText=stats.zeroes7.toLocaleString();document.getElementById('stat-zeroes8').innerText=stats.zeroes8.toLocaleString();document.getElementById('stat-kind5').innerText=stats.kind5.toLocaleString();document.getElementById('stat-kind6').innerText=stats.kind6.toLocaleString();document.getElementById('stat-kind7').innerText=stats.kind7.toLocaleString();document.getElementById('stat-kind8').innerText=stats.kind8.toLocaleString();document.getElementById('stat-kind9').innerText=stats.kind9.toLocaleString();document.getElementById('stat-bookend4').innerText=stats.bookend4.toLocaleString();document.getElementById('stat-mirror3').innerText=stats.mirror3.toLocaleString();document.getElementById('stat-mirror4').innerText=stats.mirror4.toLocaleString();document.getElementById('stat-straight').innerText=stats.straight.toLocaleString();document.getElementById('stat-straight-ext').innerText=stats.straightExt.toLocaleString();document.getElementById('stat-unstraight5').innerText=stats.unstraight5.toLocaleString();document.getElementById('stat-unstraight-ext').innerText=stats.unstraightExt.toLocaleString();document.getElementById('stat-fullhouse').innerText=stats.fullhouse.toLocaleString();document.getElementById('stat-fullhouse-ext').innerText=stats.fullhouseExt.toLocaleString();document.getElementById('stat-prime').innerText=stats.prime.toLocaleString();document.getElementById('stat-twin').innerText=stats.twin.toLocaleString();document.getElementById('stat-fib').innerText=stats.fib.toLocaleString();document.getElementById('stat-mile').innerText=stats.milestone.toLocaleString();document.getElementById('stat-bin').innerText=stats.binary.toLocaleString();document.getElementById('stat-std').innerText=stats.standard.toLocaleString();document.getElementById('stat-king').innerText=stats.king.toLocaleString();
+            document.getElementById('stat-total').innerText=stats.total.toLocaleString();document.getElementById('stat-even').innerText=stats.even.toLocaleString();document.getElementById('stat-odd').innerText=stats.odd.toLocaleString();document.getElementById('stat-pal').innerText=stats.palindrome.toLocaleString();document.getElementById('stat-harshad').innerText=stats.harshad.toLocaleString();document.getElementById('stat-biclass').innerText=stats.biclass.toLocaleString();document.getElementById('stat-radar').innerText=stats.radar.toLocaleString();document.getElementById('stat-happy').innerText=stats.happy.toLocaleString();document.getElementById('stat-bookend').innerText=stats.bookend.toLocaleString();document.getElementById('stat-mill').innerText=stats.mill.toLocaleString();document.getElementById('stat-zeroes4').innerText=stats.zeroes4.toLocaleString();document.getElementById('stat-zeroes5').innerText=stats.zeroes5.toLocaleString();document.getElementById('stat-zeroes6').innerText=stats.zeroes6.toLocaleString();document.getElementById('stat-zeroes7').innerText=stats.zeroes7.toLocaleString();document.getElementById('stat-zeroes8').innerText=stats.zeroes8.toLocaleString();document.getElementById('stat-kind5').innerText=stats.kind5.toLocaleString();document.getElementById('stat-kind6').innerText=stats.kind6.toLocaleString();document.getElementById('stat-kind7').innerText=stats.kind7.toLocaleString();document.getElementById('stat-kind8').innerText=stats.kind8.toLocaleString();document.getElementById('stat-kind9').innerText=stats.kind9.toLocaleString();document.getElementById('stat-bookend4').innerText=stats.bookend4.toLocaleString();document.getElementById('stat-mirror3').innerText=stats.mirror3.toLocaleString();document.getElementById('stat-mirror4').innerText=stats.mirror4.toLocaleString();document.getElementById('stat-straight').innerText=stats.straight.toLocaleString();document.getElementById('stat-straight6').innerText=stats.straight6.toLocaleString();document.getElementById('stat-straight7').innerText=stats.straight7.toLocaleString();document.getElementById('stat-straight8').innerText=stats.straight8.toLocaleString();document.getElementById('stat-straight9').innerText=stats.straight9.toLocaleString();document.getElementById('stat-unstraight5').innerText=stats.unstraight5.toLocaleString();document.getElementById('stat-unstraight6').innerText=stats.unstraight6.toLocaleString();document.getElementById('stat-unstraight7').innerText=stats.unstraight7.toLocaleString();document.getElementById('stat-unstraight8').innerText=stats.unstraight8.toLocaleString();document.getElementById('stat-unstraight9').innerText=stats.unstraight9.toLocaleString();document.getElementById('stat-fullhouse').innerText=stats.fullhouse.toLocaleString();document.getElementById('stat-fullhouse-ext').innerText=stats.fullhouseExt.toLocaleString();document.getElementById('stat-fullhouse5-4').innerText=stats.fullhouse54.toLocaleString();document.getElementById('stat-prime').innerText=stats.prime.toLocaleString();document.getElementById('stat-twin').innerText=stats.twin.toLocaleString();document.getElementById('stat-fib').innerText=stats.fib.toLocaleString();document.getElementById('stat-mile').innerText=stats.milestone.toLocaleString();document.getElementById('stat-bin').innerText=stats.binary.toLocaleString();document.getElementById('stat-std').innerText=stats.standard.toLocaleString();document.getElementById('stat-king').innerText=stats.king.toLocaleString();
             if (hideZeroEntries) {
                 document.querySelectorAll('.summary-stat').forEach(stat => {
                     const valDiv = stat.querySelector('.stat-val');
@@ -605,14 +627,14 @@
             document.getElementById('summary-range').innerText=selectedTimeRangeDays>0?`Last ${selectedTimeRangeDays} day(s)`:'All Time';
             dashboard.style.display="block";
 
-            filterBar.style.display = "flex";
-            activeFilterDays = 0;
+            if(filterBar) filterBar.style.display = "flex";
+            activeFilterDays = selectedTimeRangeDays;
             document.querySelectorAll('.filter-btn').forEach(btn => {
-                btn.classList.toggle('active', parseInt(btn.dataset.days) === 0);
+                btn.classList.toggle('active', parseInt(btn.dataset.days) === selectedTimeRangeDays);
             });
-            applyFilter(0);
+            applyFilter(selectedTimeRangeDays);
             statusDiv.innerText=`Report complete! Phoenix Prime engine successfully isolated ${foundBlocks.length} collection records.`;
-        }catch(error){console.error(error);statusDiv.innerText=`Query Error: ${error.message}. Ensure the username is correct and SDS is reachable.`;const pc=document.getElementById('progress-container');if(pc)pc.style.display='none'}finally{btn.disabled=false}
+        }catch(error){console.error(error);if(statusDiv)statusDiv.innerText=`Query Error: ${error.message}. Ensure the username is correct and SDS is reachable.`;const pc=document.getElementById('progress-container');if(pc)pc.style.display='none'}finally{if(btn)btn.disabled=false}
     }
 
     // ---------- Sidebar - Upcoming Special Blocks ----------
@@ -667,10 +689,14 @@
                 const run = longestConsecutiveRun(s);
                 if (run === 5) badges.push({label:'St5', cls:'badge-straight', title:'5-length Straight'});
                 else if (run >= 6) badges.push({label:'St'+run, cls:'badge-straight-ext', title:run+'-length Straight'});
-                if (isFullHouse(s)) badges.push({label:'FH', cls:'badge-fullhouse', title:'Full House'});
-                if (isExtendedFullHouse(s)) badges.push({label:'FHx', cls:'badge-fullhouse-ext', title:'Full House Ext'});
+                if (isFullHouse(s)) badges.push({label:'FH3-2', cls:'badge-fullhouse', title:'Full House 3-2'});
+                if (isExtendedFullHouse(s)) badges.push({label:'FH4-3', cls:'badge-fullhouse-ext', title:'Full House 4-3'});
+                if (isFullHouse54(s)) badges.push({label:'FH5-4', cls:'badge-straight-ext', title:'Full House 5-4'});
                 if (hasUnorderedStraight5(s)) badges.push({label:'USt5', cls:'badge-unstraight5', title:'Unordered Straight 5'});
-                if (hasUnorderedStraightExt(s)) badges.push({label:'USt6+', cls:'badge-unstraight-ext', title:'Unordered Straight Ext'});
+                if (hasUnorderedStraight6(s)) badges.push({label:'USt6', cls:'badge-unstraight-ext', title:'Unordered Straight 6'});
+                if (hasUnorderedStraight7(s)) badges.push({label:'USt7', cls:'badge-unstraight-ext', title:'Unordered Straight 7'});
+                if (hasUnorderedStraight8(s)) badges.push({label:'USt8', cls:'badge-unstraight-ext', title:'Unordered Straight 8'});
+                if (hasUnorderedStraight9(s)) badges.push({label:'USt9', cls:'badge-unstraight-ext', title:'Unordered Straight 9'});
                 if (isPrime(n)) badges.push({label:'Pri', cls:'badge-prime', title:'Phoenix Prime'});
                 if (isTwinPrime(n)) badges.push({label:'TwP', cls:'badge-twin', title:'Twin Prime'});
                 if (isFibonacci(n)) badges.push({label:'Fib', cls:'badge-fib', title:'Fibonacci'});
