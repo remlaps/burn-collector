@@ -499,11 +499,11 @@
             }
             const userKey=`${username}|${b.unit}`;
             const userTotal=(burnMap[userKey]!==undefined)?burnMap[userKey]:b.amount;
-            let isHighest=true;let kingAccount=username;let maxBurn=userTotal;
+            let isHighest=true;let maxBurn=userTotal;
             for(const [key,total] of Object.entries(burnMap)){
                 const sym=key.split('|')[1];
-                if(sym!==b.unit)continue;
-                if(total>maxBurn){maxBurn=total;kingAccount=key.split('|')[0];isHighest=false;}
+                if(sym!==b.unit||key===userKey)continue;
+                if(total>=maxBurn){maxBurn=total;isHighest=false;}
             }
             if(isHighest){
                 const competitors=Object.keys(burnMap).filter(k=>k.split('|')[1]===b.unit).length;
@@ -511,7 +511,7 @@
                 const adjustedTimestamp=(typeof b.timestamp==='number'?b.timestamp:parseInt(b.timestamp)) + 3;
                 return {
                     item:{timestamp:adjustedTimestamp,burnAmount:`${b.amount} ${b.unit}`,blockNum},
-                    dominance:{isHighest,kingAccount,maxBurn,competitorsCount:competitors},
+                    dominance:{isHighest,kingAccount:username,maxBurn,competitorsCount:competitors},
                     username
                 };
             }

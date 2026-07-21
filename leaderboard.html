@@ -404,10 +404,16 @@
             }
             
             for (const [asset, accounts] of Object.entries(assetGroups)) {
-                let maxAmt = 0, maxAccount = '';
-                for (const [acct, amt] of Object.entries(accounts)) {
-                    if (amt > maxAmt) { maxAmt = amt; maxAccount = acct; }
+                let maxAmt = 0;
+                const amts = Object.values(accounts);
+                for (const amt of amts) {
+                    if (amt > maxAmt) maxAmt = amt;
                 }
+                // Count how many accounts have the max amount
+                const winnersForAsset = Object.entries(accounts).filter(([, amt]) => amt === maxAmt);
+                // If there's a tie, skip (no BurnMaxxer in a tie)
+                if (winnersForAsset.length !== 1) continue;
+                const [maxAccount] = winnersForAsset[0];
                 winners.push({
                     timestamp: group.timestamp,
                     asset,
