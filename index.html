@@ -363,13 +363,22 @@
     }
     function resolveColIdx(cols,name,fallback){if(Array.isArray(cols)){const idx=cols.indexOf(name);return idx===-1?fallback:idx}else if(cols&&typeof cols==='object'){if(typeof cols[name]!=='undefined')return cols[name];const idx=Object.keys(cols).indexOf(name);return idx===-1?fallback:idx}return fallback}
 
-    async function getBlockNumberByTime(timestamp){
-        try{
-            const url=`https://sds0.steemworld.org/chain_api/getBlockInfoByTime/${timestamp}`;
-            const resp=await fetch(url);
-            const data=await resp.json();
-            if(data&&data.result&&typeof data.result.block_num==='number')return data.result.block_num;
-        }catch(e){console.error('Block lookup error:',e)}
+    async function getBlockNumberByTime(timestamp, retries=4){
+        for(let attempt=0; attempt<=retries; attempt++){
+            try{
+                if(attempt>0)await sleep(500*(attempt+1));
+                const url=`https://sds0.steemworld.org/chain_api/getBlockInfoByTime/${timestamp}`;
+                const resp=await fetch(url);
+                if(!resp.ok){
+                    if(attempt===retries){console.error('Block lookup failed after retries for',timestamp,resp.status);}
+                    continue;
+                }
+                const data=await resp.json();
+                if(data&&data.result&&typeof data.result.block_num==='number')return data.result.block_num;
+            }catch(e){
+                if(attempt===retries)console.error('Block lookup error:',e);
+            }
+        }
         return null;
     }
     function resolveTimestampSeconds(ts) {
@@ -387,8 +396,9 @@
     }
 
     // Concurrent, rate-respecting settings for the Steemworld block calls.
-    const BLOCKS_CONCURRENCY=6;      // max simultaneous in-flight requests
-    const BLOCKS_REQ_SPACING_MS=105;  // minimum gap enforced between request dispatches
+    // Concurrency=5, spacing=100 processes about 10 blocks per second, which seems to be close to SteemWorld's cap.
+    const BLOCKS_CONCURRENCY=5;       // max simultaneous in-flight requests
+    const BLOCKS_REQ_SPACING_MS=100;  // minimum gap enforced between request dispatches
 
     async function fetchUserBurnKings(username, statusDiv, days){
         const limit=1000;let offset=0;
@@ -464,28 +474,28 @@
             const raw=await getBlockNumberByTime(b.timestamp);
             if(raw===null)return null;
             const blockNum=raw+1; // step 2
-            let txs=[];
+            let ops=[];
             try{
                 const bnWait=Math.max(0, BLOCKS_REQ_SPACING_MS-(now-lastDispatch));
                 if(bnWait>0)await sleep(bnWait);
                 lastDispatch=Date.now();
-                const blockResp=await fetch(`https://sds.steemworld.org/blocks_api/getTransactionsInBlock/${blockNum}`);
+                const blockResp=await fetch(`https://sds.steemworld.org/blocks_api/getOpsInBlock/${blockNum}/transfer`);
                 const blockData=await blockResp.json();
-                txs=(blockData&&blockData.result)?blockData.result:[];
+                ops=(blockData&&blockData.result)?blockData.result:[];
             }catch(e){console.error('Block fetch error:',e);return null;}
             // 4. Check dominance per asset.
             const burnMap={};
-            for(const tx of txs){
-                if(!tx.operations||!Array.isArray(tx.operations))continue;
-                for(const op of tx.operations){
-                    if(op[0]!=='transfer')continue;
-                    const td=op[1];
-                    if(td.to!=='null')continue;
-                    const parts=String(td.amount).split(' ');
-                    const amt=parseFloat(parts[0])||0;const sym=parts[1];
-                    const key=`${td.from}|${sym}`;
-                    burnMap[key]=(burnMap[key]||0)+amt;
-                }
+            for(const op of ops){
+                // getOpsInBlock returns entries like: {trx_id, block, ..., op: ["transfer", {from, to, amount}]}
+                // Extract the inner op tuple from the .op property
+                const opTuple=op&&op.op;
+                if(!Array.isArray(opTuple)||opTuple.length<2)continue;
+                const opData=opTuple[1];
+                if(!opData||opData.to!=='null')continue;
+                const parts=String(opData.amount).split(' ');
+                const amt=parseFloat(parts[0])||0;const sym=parts[1];
+                const key=`${opData.from}|${sym}`;
+                burnMap[key]=(burnMap[key]||0)+amt;
             }
             const userKey=`${username}|${b.unit}`;
             const userTotal=(burnMap[userKey]!==undefined)?burnMap[userKey]:b.amount;
